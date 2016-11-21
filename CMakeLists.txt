@@ -11,7 +11,10 @@ endif()
 if(MSVC)
     #vc 2012 fix for vararg templates
     set(MSVC_COMPILER_DEFS "-D_VARIADIC_MAX=10")
-endif() 
+endif()
+
+add_compile_options(-std=c++11)
+
 #-------------------
 # set common include folder for module
 #-------------------
