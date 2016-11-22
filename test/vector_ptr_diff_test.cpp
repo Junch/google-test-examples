@@ -34,25 +34,21 @@ void diff_ptr(const IntVtrPtr v1, const IntVtrPtr v2, IntVtrPtr added, IntVtrPtr
 }
 
 TEST(vector_diff_ptr_test, add_and_remove_elements){
-    IntVtrPtr vv1 = make_shared<vector<IntPtr> >();
-    {
-        std::vector<int> v1 = {1, 2, 3, 4};
-        for(const auto i: v1){
-            vv1->push_back(make_shared<int>(i));
-        }
-    }
+    std::vector<int> v1{1, 2, 3, 4};
+    IntVtrPtr vptr1 = make_shared<vector<IntPtr> >(vector<IntPtr>(v1.size()));
+    std::transform(v1.begin(), v1.end(), vptr1->begin(), [](int i){
+        return make_shared<int>(i);
+    });
 
-    IntVtrPtr vv2 = make_shared<vector<IntPtr> >();
-    {
-        std::vector<int> v2 = {2, 4, 5};
-        for(const auto i: v2){
-            vv2->push_back(make_shared<int>(i));
-        }
-    }
+    std::vector<int> v2 = {2, 4, 5};
+    IntVtrPtr vptr2 = make_shared<vector<IntPtr> >(vector<IntPtr>(v2.size()));
+    std::transform(v2.begin(), v2.end(), vptr2->begin(), [](int i){
+        return make_shared<int>(i);
+    });
 
     IntVtrPtr added = make_shared<vector<IntPtr> >();
     IntVtrPtr removed = make_shared<vector<IntPtr> >();
-    diff_ptr(vv1, vv2, added, removed);
+    diff_ptr(vptr1, vptr2, added, removed);
 
     EXPECT_EQ(1, added->size());
     EXPECT_EQ(2, removed->size());
