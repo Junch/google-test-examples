@@ -64,3 +64,71 @@ TEST(vector_diff_test, add_elements){
     EXPECT_EQ(4, added.size());
     EXPECT_EQ(0, removed.size());
 }
+
+////////////////////////////////////////////////////////////////
+// Use iterator instead of index
+////////////////////////////////////////////////////////////////
+
+void diff_iter(const vector<int>& v1, const vector<int>& v2, vector<int>& added, vector<int>& removed){
+    auto iter1 = v1.cbegin();
+    auto iter2 = v2.cbegin();
+
+    while (iter1 != v1.cend() && iter2 != v2.cend()) {
+        if (*iter1 == *iter2){
+            ++iter1;
+            ++iter2;
+        }else if (*iter1 < *iter2) {
+            removed.push_back(*iter1);
+            ++iter1;
+        }else {
+            added.push_back(*iter2);
+            ++iter2;
+        }
+    }
+
+    while (iter1 != v1.cend()) {
+        removed.push_back(*iter1);
+        ++iter1;
+    }
+
+    while (iter2 != v2.cend()) {
+        added.push_back(*iter2);
+        ++iter2;
+    }
+}
+
+TEST(vector_diff_iter_test, add_and_remove_elements){
+    std::vector<int> v1 = {1, 2, 3, 4};
+    std::vector<int> v2 = {2, 4, 5};
+    std::vector<int> added, removed;
+    diff(v1, v2, added, removed);
+    EXPECT_EQ(1, added.size());
+    EXPECT_EQ(2, removed.size());
+}
+
+TEST(vector_diff_iter_test, same_elements){
+    std::vector<int> v1 = {1, 2, 3, 4};
+    std::vector<int> v2 = {1, 2, 3, 4};
+    std::vector<int> added, removed;
+    diff(v1, v2, added, removed);
+    EXPECT_EQ(0, added.size());
+    EXPECT_EQ(0, removed.size());
+}
+
+TEST(vector_diff_iter_test, remove_elements){
+    std::vector<int> v1 = {1, 2, 3, 4};
+    std::vector<int> v2;
+    std::vector<int> added, removed;
+    diff(v1, v2, added, removed);
+    EXPECT_EQ(0, added.size());
+    EXPECT_EQ(4, removed.size());
+}
+
+TEST(vector_diff_iter_test, add_elements){
+    std::vector<int> v1;
+    std::vector<int> v2 = {1, 2, 3, 4};
+    std::vector<int> added, removed;
+    diff(v1, v2, added, removed);
+    EXPECT_EQ(4, added.size());
+    EXPECT_EQ(0, removed.size());
+}
