@@ -53,3 +53,42 @@ TEST(vector_diff_ptr_test, add_and_remove_elements){
     EXPECT_EQ(1, added->size());
     EXPECT_EQ(2, removed->size());
 }
+
+///////////////////////////////////////////////////////////////
+//  ContactInfo
+///////////////////////////////////////////////////////////////
+
+struct ContactInfo
+{
+    std::string uri;
+    std::string nickName;
+    std::string groupName;
+};
+
+bool operator< (const ContactInfo& lhs, const ContactInfo& rhs) {
+    if (lhs.uri < rhs.uri) return true;
+    if (lhs.nickName < rhs.nickName) return true;
+    if (lhs.groupName < rhs.groupName) return true;
+
+    return false;
+};
+
+TEST(contactInfo_operator_smaller, add_and_remove_elements) {
+    {
+        ContactInfo info1 {"user_A@cisco.com", "nick_a", "group1"};
+        ContactInfo info2 {"user_A@cisco.com", "nick_b", "group1"};
+        EXPECT_TRUE(info1 < info2);
+    }
+
+    {
+        ContactInfo info1 {"user_A@cisco.com", "nick_a", "group1"};
+        ContactInfo info2 {"user_A@cisco.com", "nick_a", "group2"};
+        EXPECT_TRUE(info1 < info2);
+    }
+
+    {
+        ContactInfo info1 {"user_A@cisco.com", "nick_a", "group1"};
+        ContactInfo info2 {"user_A@cisco.com", "nick_a", "group1"};
+        EXPECT_TRUE(!(info1 < info2));
+    }
+}
