@@ -73,7 +73,17 @@ void diff_iter(const vector<int>& v1, const vector<int>& v2, vector<int>& added,
     auto iter1 = v1.cbegin();
     auto iter2 = v2.cbegin();
 
-    while (iter1 != v1.cend() && iter2 != v2.cend()) {
+    while (true) {
+        if (iter1 == v1.cend()) {
+            std::copy(iter2, v2.cend(), std::back_inserter(added));
+            return;
+        }
+
+        if (iter2 == v2.cend()){
+            std::copy(iter1, v1.cend(), std::back_inserter(removed));
+            return;
+        }
+
         if (*iter1 == *iter2){
             ++iter1;
             ++iter2;
@@ -84,16 +94,6 @@ void diff_iter(const vector<int>& v1, const vector<int>& v2, vector<int>& added,
             added.push_back(*iter2);
             ++iter2;
         }
-    }
-
-    while (iter1 != v1.cend()) {
-        removed.push_back(*iter1);
-        ++iter1;
-    }
-
-    while (iter2 != v2.cend()) {
-        added.push_back(*iter2);
-        ++iter2;
     }
 }
 
