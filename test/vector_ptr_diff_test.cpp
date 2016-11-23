@@ -92,3 +92,27 @@ TEST(contactInfo_operator_smaller, add_and_remove_elements) {
         EXPECT_TRUE(!(info1 < info2));
     }
 }
+
+TEST(contactInfo_operator_smaller, sort_elements) {
+    typedef shared_ptr<ContactInfo> ContactInfoPtr;
+    typedef vector<ContactInfoPtr> ContactInfoVtr;
+    vector<ContactInfo> v = {
+        {"user_B@cisco.com", "nick_a", "group2"},
+        {"user_B@cisco.com", "nick_a", "group1"},
+        {"user_A@cisco.com", "nick_a", "group1"}
+    };
+
+    ContactInfoVtr vv(v.size());
+
+    std::transform(v.cbegin(), v.cend(), vv.begin(), [](const ContactInfo& info){
+        return make_shared<ContactInfo>(info);
+    });
+
+    std::sort(vv.begin(), vv.end(), [](const auto& ptr1, const auto& ptr2){
+        return *ptr1 < *ptr2;
+    });
+
+    std::for_each(vv.begin(), vv.end(), [](const auto& infoPtr){
+        std::cout << infoPtr->uri <<" "<< infoPtr->nickName << " " << infoPtr->groupName << "\n";
+    });
+}
