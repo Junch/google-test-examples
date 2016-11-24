@@ -65,10 +65,22 @@ struct ContactInfo
     std::string groupName;
 };
 
+// http://stackoverflow.com/questions/979759/operator-and-strict-weak-ordering/981299#981299
 bool operator< (const ContactInfo& lhs, const ContactInfo& rhs) {
-    if (lhs.uri < rhs.uri) return true;
-    if (lhs.nickName < rhs.nickName) return true;
-    if (lhs.groupName < rhs.groupName) return true;
+    if (lhs.uri < rhs.uri)
+        return true;
+    else if (rhs.uri < lhs.uri)
+        return false;
+
+    if (lhs.nickName < rhs.nickName)
+        return true;
+    else if (rhs.nickName < lhs.nickName)
+        return false;
+
+    if (lhs.groupName < rhs.groupName)
+        return true;
+    else if (rhs.groupName < lhs.groupName)
+        return false;
 
     return false;
 };
@@ -97,9 +109,10 @@ TEST(contactInfo_operator_smaller, sort_elements) {
     typedef shared_ptr<ContactInfo> ContactInfoPtr;
     typedef vector<ContactInfoPtr> ContactInfoVtr;
     vector<ContactInfo> v = {
-        {"user_B@cisco.com", "nick_b", "group2"},
-        {"user_B@cisco.com", "nick_b", "group1"},
-        {"user_A@cisco.com", "nick_a", "group1"}
+        {"haozwang@cisco.com","", "Team"},
+        {"fyang3@cisco.com",  "", "Team"},
+        {"jinjgu@cisco.com", "", "Other"},
+        {"guhua@cisco.com", "", "Team"}
     };
 
     ContactInfoVtr vv(v.size());
@@ -115,4 +128,9 @@ TEST(contactInfo_operator_smaller, sort_elements) {
     std::for_each(vv.begin(), vv.end(), [](const ContactInfoPtr& infoPtr){
         std::cout << infoPtr->uri <<" "<< infoPtr->nickName << " " << infoPtr->groupName << "\n";
     });
+
+    bool bSorted = std::is_sorted(vv.cbegin(), vv.cend(), [](const auto&lhs, const auto& rhs) {
+        return *lhs < *rhs;
+    });
+    EXPECT_TRUE(bSorted);
 }
