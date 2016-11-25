@@ -129,7 +129,7 @@ TEST(contactInfo_operator_smaller, sort_elements) {
         std::cout << infoPtr->uri <<" "<< infoPtr->nickName << " " << infoPtr->groupName << "\n";
     });
 
-    bool bSorted = std::is_sorted(vv.cbegin(), vv.cend(), [](const auto&lhs, const auto& rhs) {
+    bool bSorted = std::is_sorted(vv.cbegin(), vv.cend(), [](const ContactInfoPtr&lhs, const ContactInfoPtr& rhs) {
         return *lhs < *rhs;
     });
     EXPECT_TRUE(bSorted);
