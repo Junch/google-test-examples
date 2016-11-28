@@ -1,4 +1,4 @@
-#include "gtest/gtest.h"
+#include "gmock/gmock.h"
 #include <vector>
 using namespace std;
 
@@ -34,8 +34,9 @@ TEST(vector_diff_test, add_and_remove_elements){
     std::vector<int> v2 = {2, 4, 5};
     std::vector<int> added, removed;
     diff(v1, v2, added, removed);
-    EXPECT_EQ(1, added.size());
-    EXPECT_EQ(2, removed.size());
+
+    ASSERT_THAT(added, ::testing::ElementsAre(5));
+    ASSERT_THAT(removed, ::testing::ElementsAre(1,3));
 }
 
 TEST(vector_diff_test, same_elements){
@@ -102,8 +103,9 @@ TEST(vector_diff_iter_test, add_and_remove_elements){
     std::vector<int> v2 = {2, 4, 5};
     std::vector<int> added, removed;
     diff(v1, v2, added, removed);
-    EXPECT_EQ(1, added.size());
-    EXPECT_EQ(2, removed.size());
+
+    ASSERT_THAT(added, ::testing::ElementsAre(5));
+    ASSERT_THAT(removed, ::testing::ElementsAre(1,3));
 }
 
 TEST(vector_diff_iter_test, same_elements){
