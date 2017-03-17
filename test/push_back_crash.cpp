@@ -11,3 +11,18 @@ TEST(push_back_crash, example) {
 
     ASSERT_DEATH(vPtr2->push_back(vPtr1->front()), "");
 }
+
+
+void vector_begin_crash(shared_ptr<vector<unsigned int> > types) {
+	vector<unsigned int>::iterator it = types->begin();
+	for( ; it != types->end(); ++it)
+	{
+		std::cout << *it << ',';
+	}
+	std::cout << std::endl;
+}
+
+
+TEST(vector_begin_crash, example) {
+	ASSERT_DEATH(vector_begin_crash(nullptr), "");
+}
