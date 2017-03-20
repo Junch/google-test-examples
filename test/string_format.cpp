@@ -2,6 +2,12 @@
 #include "string_format.h"
 using namespace std;
 
+#ifdef _MSC_VER
+#define __noinline         __declspec(noinline)
+#else
+#define __noinline         __attribute__ ((noinline))
+#endif
+
 TEST(string_format, test){
     std::string name = "Jun Chen";
     std::string ret = string_format("%s: %d", name.c_str(), 40);
@@ -41,4 +47,40 @@ TEST(string_format2, test){
     std::string name = "Jun Chen";
     std::string ret = string_format2("%s: %d", name.c_str(), 40);
     EXPECT_EQ(ret, "Jun Chen: 40");
+}
+
+// http://stackoverflow.com/questions/2155730/how-do-c-compilers-implement-functions-that-return-large-structures
+// Return Value Optimization
+struct Data {
+    unsigned values[9] = {1,2,3};
+};
+
+__noinline
+Data createData(int num) 
+{
+    Data data;
+    data.values[3] = num;
+
+    return data;
+}
+
+// 00d97510 55              push    ebp
+// 00d97511 8bec            mov     ebp,esp
+// 00d97513 8b4508          mov     eax,dword ptr [ebp+8]       ==> hidden arg is the pointer to the return value Data
+// 00d97516 0f57c0          xorps   xmm0,xmm0
+// 00d97519 8b4d0c          mov     ecx,dword ptr [ebp+0Ch]     ==> first arg is here
+
+// 00d9751c c70001000000    mov     dword ptr [eax],1           ==> Construct values
+// 00d97522 c7400402000000  mov     dword ptr [eax+4],2
+// 00d97529 c7400803000000  mov     dword ptr [eax+8],3
+// 00d97530 0f11400c        movups  xmmword ptr [eax+0Ch],xmm0
+// 00d97534 660fd6401c      movq    mmword ptr [eax+1Ch],xmm0
+
+// 00d97539 89480c          mov     dword ptr [eax+0Ch],ecx     ==> Set the num here
+// 00d9753c 5d              pop     ebp
+// 00d9753d c3              ret
+
+TEST(RVO, test){
+    Data a = createData(4);
+    EXPECT_EQ(a.values[3], 4);
 }
