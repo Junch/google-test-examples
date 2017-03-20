@@ -3,11 +3,10 @@
 using namespace std;
 
 TEST(string_format, test){
-	std::string name = "Jun Chen";
-	std::string ret = string_format("%s: %d", name.c_str(), 40);
-	EXPECT_EQ(ret, "Jun Chen: 40");
+    std::string name = "Jun Chen";
+    std::string ret = string_format("%s: %d", name.c_str(), 40);
+    EXPECT_EQ(ret, "Jun Chen: 40");
 }
-
 
 // 00886089 6a08            push    8
 // 0088608b 68e0f78a00      push    offset google_test_examples_test!`string' (008af7e0)
@@ -37,3 +36,9 @@ TEST(string_format, test){
 // 008860e8 8d45a8          lea     eax,[ebp-58h]
 // 008860eb 50              push    eax                           ==> 存放返回值吗?
 // 008860ec e8ff080000      call    google_test_examples_test!string_format<char const *,int> (008869f0)
+
+TEST(string_format2, test){
+    std::string name = "Jun Chen";
+    std::string ret = string_format2("%s: %d", name.c_str(), 40);
+    EXPECT_EQ(ret, "Jun Chen: 40");
+}
