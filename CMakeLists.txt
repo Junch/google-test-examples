@@ -28,11 +28,11 @@ set(EXT_PROJECTS_DIR ${PROJECT_SOURCE_DIR}/ext)
 #-------------------
 # Module source
 #-------------------
-#set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}_impl)
+set(PROJECT_LIB_NAME ${PROJECT_NAME_STR}_impl)
 
-#include_directories(${COMMON_INCLUDES})
-#file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
-#add_library(${PROJECT_LIB_NAME} ${SRC_FILES})
+include_directories(${COMMON_INCLUDES})
+file(GLOB SRC_FILES ${PROJECT_SOURCE_DIR}/src/*.cpp)
+add_library(${PROJECT_LIB_NAME} ${SRC_FILES})
 
 add_subdirectory(${EXT_PROJECTS_DIR}/gtest)
 
@@ -65,6 +65,6 @@ else()
         )
 endif()
 
-target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT})
+target_link_libraries(${PROJECT_TEST_NAME} ${CMAKE_THREAD_LIBS_INIT} ${PROJECT_LIB_NAME})
 
 add_test(test1 ${PROJECT_TEST_NAME})
