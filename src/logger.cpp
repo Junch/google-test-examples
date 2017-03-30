@@ -1,4 +1,5 @@
 #include "logger.h"
+#include "string_format.h"
 #include <ctime>
 #include <chrono>
 
@@ -30,16 +31,20 @@ const std::string CurrentDateTime()
     tp -= s;
     milliseconds milli = duration_cast<milliseconds>(tp);
 
-    {
-        auto ms = duration_cast<milliseconds>(tp);
-        size_t frac = ms.count() % 1000;
+    // {
+    //     auto ms = duration_cast<milliseconds>(tp);
+    //     size_t frac = ms.count() % 1000;
 
-        printf("frac=%u, milli=%u\n", frac, milli);
-    }
+    //     printf("frac=%zu, milli=%zu\n", frac, milli);
+    // }
     
     time_t curr_now = system_clock::to_time_t(now);
     struct tm  tstruct;
+    #ifdef _WIN32
     localtime_s(&tstruct, &curr_now);
+    #else
+    localtime_r(&curr_now, &tstruct);
+    #endif
 
     char  fmt[64];
     char  buf[64];
@@ -65,21 +70,14 @@ void CLogger::Log(const char * format, ...)
 {
     va_list args;
     va_start(args, format);
-    //  Return the number of characters in the string referenced the list of arguments.
-    // _vscprintf doesn't count terminating '\0' (that's why +1)
-    int nLength = _vscprintf(format, args) + 1;
-    char* sMessage = new char[nLength];
-    vsprintf_s(sMessage, nLength, format, args);
-    //vsprintf(sMessage, format, args);
-    m_Logfile << CurrentDateTime() << " " << sMessage << "\n";
+    std::string sMessage = string_format(format, args);
     va_end(args);
- 
-    delete [] sMessage;
+    m_Logfile << CurrentDateTime() << " " << sMessage << "\n";
 }
 
 void CLogger::Log(const string& sMessage)
 {
-    m_Logfile <<  CurrentDateTime() << " " << sMessage << "\n";
+    m_Logfile << CurrentDateTime() << " " << sMessage << "\n";
 }
 
 CLogger& CLogger::operator<<(const string& sMessage)
