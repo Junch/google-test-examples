@@ -53,11 +53,6 @@ const std::string CurrentDateTime()
     return buf;
 }
 
-CLogger::CLogger()
-{
- 
-}
-
 CLogger* CLogger::GetLogger(){
     if (m_pThis == nullptr){
         m_pThis = new CLogger();

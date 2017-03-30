@@ -14,3 +14,5 @@ std::string string_format2( const std::string& format, Args ... args )
 
 // http://stackoverflow.com/questions/23157530/vsnprintf-on-mac-gives-exc-bad-access
 std::string string_format(const char* fmt, ...);
+
+std::string string_format(const char* fmt, va_list vlist);

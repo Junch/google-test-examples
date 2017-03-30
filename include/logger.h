@@ -40,11 +40,11 @@ private:
     /**
     *    Default constructor for the Logger class.
     */
-    CLogger();
+    CLogger() = default;
     /**
     *   copy constructor for the Logger class.
     */
-    CLogger(const CLogger&){};             // copy constructor is private
+    CLogger(const CLogger&) = delete;             // copy constructor is private
     /**
     *   assignment operator for the Logger class.
     */
