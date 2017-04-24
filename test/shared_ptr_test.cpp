@@ -31,3 +31,11 @@ TEST(shared_ptr, ref_use_count)
     reset_ptr_ref(p2);
     printf("p1.use_count=%d p2.use_count=%d\n", p1.use_count(), p2.use_count());
 }
+
+TEST(shared_ptr, move)
+{
+    auto p1 = make_shared<string>("test shared_ptr");
+    auto p2 = p1;
+    auto p3 = std::move(p2);
+    printf("p1.use_count=%d p2.use_count=%d\n", p1.use_count(), p2.use_count());
+}
