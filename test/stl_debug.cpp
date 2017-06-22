@@ -66,7 +66,7 @@ TEST(MAP, test){
     for (auto& item: myvec) {
         printf("vector: %s\n", item.c_str());
     }
-    printf("vector: size: %u, capacity: %u\n", myvec.size(), myvec.capacity());
+    printf("vector: size: %lu, capacity: %lu\n", myvec.size(), myvec.capacity());
 
     for (auto& item: mylist) {
         printf("list: %s\n", item.c_str());
@@ -93,7 +93,7 @@ public:
         m_name = std::move(a.m_name);
     }
 
-    A &A::operator =(const A& a){
+    A& operator=(const A& a){
         printf("A::operator =\n");
         if (this == &a){
             return *this;
@@ -114,8 +114,8 @@ TEST(MAP, tranverse)
 {
 using Container = map<int, A>;
     Container container;
-    container.emplace(1, "item1");
-    container.emplace(2, "item2");
+    container.emplace(1, std::string("item1"));
+    container.emplace(2, std::string("item2"));
 
     printf("================\n");
 
@@ -130,8 +130,8 @@ TEST(MAP, tranverse_op)
 {
 using Container = map<int, A>;
     Container container;
-    container.emplace(1, "item1");
-    container.emplace(2, "item2");
+    container.emplace(1, std::string("item1"));
+    container.emplace(2, std::string("item2"));
 
     printf("================\n");
 
