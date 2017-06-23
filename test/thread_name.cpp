@@ -3,10 +3,8 @@ using namespace std;
 
 string getThreadIdLast16bits(uint64_t id){
 	ostringstream oss;
-	oss << hex << id;
-	const string& content = oss.str();
-	int length = content.length();
-	return length < 4? content: content.substr(length-4, length);
+	oss << hex << static_cast<unsigned short>(id);
+	return oss.str();
 }
 
 string getPrintName(std::string threadName, uint64_t id)
