@@ -269,9 +269,43 @@ TEST(VECTOR, push5)
 {
 using Container = vector<A>;
     Container container;
+    container.reserve(4);
+    container.push_back(A("item1"));
+    container.push_back(A("item2"));
+    container.push_back(A("item3"));
+
+    printf("================\n");
+}
+
+TEST(VECTOR, push6)
+{
+using Container = vector<A>;
+    Container container;
     container.emplace_back("item1");
     container.emplace_back("item2");
     container.emplace_back("item3");
 
     printf("================\n");
+}
+
+
+TEST(VECTOR, push7)
+{
+using Container = vector<A>;
+    Container container;
+    container.reserve(4);
+    container.emplace_back("item1");
+    container.emplace_back("item2");
+    container.emplace_back("item3");
+
+    printf("================\n");
+}
+
+TEST(VECTOR, push_alloc)
+{
+using Container = vector<A>;
+    Container container;
+    for (int  i=0; i< 100; ++i){
+        container.push_back(A("item"));
+    }
 }
