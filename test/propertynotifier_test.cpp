@@ -67,17 +67,24 @@ public:
         UnifiedBusinessObjectImpl::addObserver(observer);
     }
 
-    void PhotoBaseImpl::removeObserver(std::weak_ptr<PhotoObserver> observer)
+    void removeObserver(std::weak_ptr<PhotoObserver> observer)
     {
         UnifiedBusinessObjectImpl::removeObserver(observer);
     }
+};
 
-
+class ABC {
+public:
+    void onImageTypeChanged() {
+        printf("ABC::onImageTypeChanged\n");
+    }
 };
 
 TEST(Photo, test) {
-    PhotoBaseImpl* base = new PhotoBaseImpl();
+    std::unique_ptr<PhotoBaseImpl> base = std::make_unique<PhotoBaseImpl>();
+    std::unique_ptr<ABC> abc = std::make_unique<ABC>();
 
+    auto r = std::dynamic_pointer_cast<PhotoNotifiers>(base->getUnifiedBusinessObjectNotifiers());
+    r->getImageTypeNotifier()->connect(std::bind(&ABC::onImageTypeChanged, abc.get()));
+    base->fireImageType();
 }
-
-

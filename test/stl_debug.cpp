@@ -206,6 +206,44 @@ using Container = map<int, A>;
     printf("================\n");
 }
 
+TEST(MAP, emplace)
+{
+    using Container = map<int, A>;
+    A a1("item1");
+    A a2("item2");
+
+    printf("================\n");
+    Container container;
+    container.emplace(1, std::move(a1));
+    auto ret = container.emplace(1, std::move(a2));
+    // Returns a pair consisting of an iterator to the inserted element, 
+    // or the already - existing element if no insertion happened, and a
+    // bool denoting whether the insertion took place.True for Insertion, False for No Insertion.
+    ASSERT_EQ(ret.second, false); // No insertion
+    ASSERT_STREQ(ret.first->second.m_name.c_str(), "item1");
+    printf("================\n");
+}
+
+TEST(MAP, emplace_hint)
+{
+    //https://stackoverflow.com/questions/41507671/what-is-the-use-of-emplace-hint-in-map
+    using Container = map<int, A>;
+    A a1("item1");
+    A a2("item2");
+
+    printf("================\n");
+    Container container;
+    container.emplace(1, std::move(a1));
+
+    auto it = container.lower_bound(1);
+    ASSERT_TRUE(it != container.end() && it->first == 1);
+
+    it = container.lower_bound(2);
+    ASSERT_TRUE(it == container.end());
+    auto ret = container.emplace_hint(it, 2, std::move(a2));
+    ASSERT_TRUE(ret->first == 2);
+}
+
 TEST(VECTOR, push1)
 {
 using Container = vector<A>;
