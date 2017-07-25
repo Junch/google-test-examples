@@ -1,0 +1,79 @@
+@startuml
+digraph g {
+    graph [
+        rankdir = "LR"
+        splines = polyline
+        overlap = scalexy
+    ];
+    node [
+        fontsize = "16"
+        shape = "record"
+        fillcolor = gray
+        style = filled
+    ];
+    edge [
+    ];
+    
+    subgraph cluster_0 {
+    
+        graph [
+            splines=line;
+        ];
+    
+        label = "std::vector<std::string>";
+    
+        header [
+            label = "<f0> _MyFirst| <f1> _MyLast | <f2> _MyEnd",
+        ];
+        data [
+            label = "<f0> \"vec1\" | \"vec2\" | \"vec3\" | \"vec4\" | <f4> \"vec5\" | <f5>"
+        ];
+        
+        header:f0 -> data:f0:nw;
+        header:f1 -> data:f4:sw [constraint=false];
+        header:f2 -> data:f5:sw [constraint=false];
+    }
+    
+    subgraph cluster_1 {
+    
+        graph [
+            overlap = false
+            splines = ortho
+        ];
+    
+        label = "std::list<std::string>";
+    
+        listheader [
+            label = "<f0> _head| _size",
+        ];
+
+        datax [ label = "<next> _next | <prev> _prev |" ];
+        data0 [ label = "<next> _next | <prev> _prev |  \"list1\" "];
+        data1 [ label = "<next> _next | <prev> _prev |  \"list2\" "];
+        data2 [ label = "<next> _next | <prev> _prev |  \"list3\" "];
+        data3 [ label = "<next> _next | <prev> _prev |  \"list4\" "];
+        data4 [ label = "<next> _next | <prev> _prev |  \"list5\" "];
+        
+        listheader:f0 -> datax;
+        datax:next -> data0:next;
+        data0:prev -> datax;
+        
+        data0:next -> data1:next;
+        data1:prev -> data0;
+        
+        data1:next -> data2:next;
+        data2:prev -> data1;
+        
+        data2:next -> data3:next;
+        data3:prev -> data2;
+        
+        data3:next -> data4:next;
+        data4:prev -> data3;
+        
+        datax:prev -> data4;
+        data4:next:n -> datax:n;
+
+    }
+    
+}
+@enduml
