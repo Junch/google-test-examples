@@ -8,7 +8,7 @@ digraph g {
     node [
         fontsize = "16"
         shape = "record"
-        fillcolor = gray
+        fillcolor = "orange:yellow"
         style = filled
     ];
     edge [
